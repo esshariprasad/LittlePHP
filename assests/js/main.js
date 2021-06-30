@@ -39,17 +39,25 @@ $(document)
         async:true,
     })
     .done(function ajaxDone(data){
-        console.log(data);
+       //200 success
+        
         if(data.redirect!==undefined)
         {
             window.location=data.redirect;
         }
+        else if(data.error!==undefined)
+        {
+            _error
+            .text(data.error)
+            .show();
+        }
+
     })
     .fail(function ajaxFailed(e){
         console.log(e)
     })
     .always(function ajaxAlwaysDoThis(data){
-        console.log('Always')
+  //      console.log('Always')
     })
     return false
 

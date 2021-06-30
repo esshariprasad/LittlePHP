@@ -12,6 +12,7 @@ class DB {
 	private function __construct() {
 
 		try {
+			//opening the connection
 
 			self::$con = new PDO( 'mysql:charset=utf8mb4;host=localhost;port=3306;dbname=logincourse', 'root', '' );
 			self::$con->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
