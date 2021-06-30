@@ -4,7 +4,9 @@
         exit('You dont have config file');
     }
 
-//
+//for security
 
-
+include_once "classes/DB.php";
+$con= DB::getConnection();
+//classname::function_name
 ?>
