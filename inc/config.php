@@ -21,7 +21,10 @@ if(!isset($_SESSION))
 //include DB files
 include_once "classes/DB.php";
 include_once "classes/Filter.php";
-include_once "functions.php";
-$con= DB::getConnection();
+
+include_once "classes/User.php";
+include_once "classes/Page.php";
+
+
 //classname::function_name
 ?>
