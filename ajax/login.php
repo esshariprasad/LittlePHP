@@ -1,65 +1,45 @@
-<?php
-define('__CONFIG__',true);
-require_once "../inc/config.php";
-require_once "../inc/classes/Filter.php";
+<?php 
 
+	// Allow the config
+	define('__CONFIG__', true);
 
+	// Require the config
+	require_once "../inc/config.php"; 
 
-//If submitting to ajax
-if($_SERVER['REQUEST_METHOD']=='POST')
-{
+	if($_SERVER['REQUEST_METHOD'] == 'POST') {
+		// Always return JSON format
+		// header('Content-Type: application/json');
 
-$return=[];
-    
-// header("Content-Type:application/json");
+		$return = [];
 
+		$email = Filter::String( $_POST['email'] );
+		$password = $_POST['password'];
 
-$email =Filter::String( $_POST['email']);
-//Make sure the user does not exist
-$password=$_POST['password'];
+		$user_found = User::Find($email, true);
 
+		if($user_found) {
+			// User exists, try and sign them in
+			$user_id = (int) $user_found['user_id'];
+			$hash = (string) $user_found['password'];
 
+			if(password_verify($password, $hash)) {
+				// User is signed in
+				$return['redirect'] = 'dashboard.php';
 
-$user_Found = findUser($con,$email,true);
+				$_SESSION['user_id'] = $user_id;
+			} else {
+				// Invalid user email/password combo
+				$return['error'] = "Invalid user email/password combo";
+			}
 
-if($user_Found)
-{
-   //user exists
-   
-   $user_id= (int)$user_Found['user_id'];
-   $hash=(string)$user_Found['password'];
-   
-   if(password_verify($password,$hash))
-   {
-    $return['is_logged_in']=true;
-    $_SESSION['user_id']= (int) $user_id;
-    $return['redirect']= 'dashboard.php?message_welcome';
-    
-   }
-   else{
-       $return['error']="Invalid user email/password combo";
-   }
+		} else {
+			// They need to create a new account
+			$return['error'] = "You do not have an account. <a href='/register.php'>Create one now?</a>";
+		}
 
-    echo json_encode($return,JSON_PRETTY_PRINT);exit;
-    
-}
-
-else{
-
-    
-    
-    //$return['is_logged_in']=true;
-   
-}
-//Return the proper intformation back to javascript to redirect us.
-$return['error']= 'No account please signup';
-    
-echo json_encode($return,JSON_PRETTY_PRINT);exit;
-
-}
-else{
-
-    exit('Invalid URL');
-}
-
+		echo json_encode($return, JSON_PRETTY_PRINT); exit;
+	} else {
+		// Die. Kill the script. Redirect the user. Do something regardless.
+		exit('Invalid URL');
+	}
 ?>
