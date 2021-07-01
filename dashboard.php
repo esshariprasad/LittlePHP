@@ -17,6 +17,7 @@ ForceLogin()
     <div class="uk-section uk-container">
         Dashboard here<?php echo  " signed in as user ".$_SESSION['user_id'];?>
     </div>
+    <a href="logout.php"><br>logout</a>
 
 </body>
 </html>
