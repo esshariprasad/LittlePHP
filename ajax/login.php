@@ -17,17 +17,17 @@ $return=[];
 $email =Filter::String( $_POST['email']);
 //Make sure the user does not exist
 $password=$_POST['password'];
-$findUser = $con->prepare("SELECT user_id,password FROM users where email=LOWER(:email) LIMIT 1");
-$findUser->bindParam(':email',$email,PDO::PARAM_STR);
-$findUser->execute();
-//Make sure the user can be added
 
-if($findUser->rowCount() ==1 )
+
+
+$user_Found = findUser($con,$email,true);
+
+if($user_Found)
 {
    //user exists
-   $User= $findUser->fetch(PDO::FETCH_ASSOC);
-   $user_id= (int)$User['user_id'];
-   $hash=(string)$User['password'];
+   
+   $user_id= (int)$user_Found['user_id'];
+   $hash=(string)$user_Found['password'];
    
    if(password_verify($password,$hash))
    {
