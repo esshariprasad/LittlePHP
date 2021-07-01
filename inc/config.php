@@ -10,6 +10,14 @@
 error_reporting(-1);
 ini_set('display_errors','On');
 
+
+//Sessions are always turned on
+
+if(!isset($_SESSION))
+{
+    session_start();
+}
+
 //include DB files
 include_once "classes/DB.php";
 $con= DB::getConnection();
